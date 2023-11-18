@@ -13,7 +13,7 @@ fillers = ['uh', 'uhm', 'um', 'huh']
 
 
 def speech_to_text(file: str):
-    return pipe(file)['text']
+    return pipe(file)['text']  # type: ignore
 
 
 def get_words(text: str):
