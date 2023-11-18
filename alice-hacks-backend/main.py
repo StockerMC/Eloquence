@@ -19,7 +19,7 @@ def speech_to_text(file: str) -> str:
 
 
 def get_words(text: str) -> list[str]:
-    text = re.sub(r'.!\?', '', text.strip())
+    text = re.sub(r'[.,!?]', '', text.strip())
     return text.split()
 
 
@@ -31,7 +31,7 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
 
 def get_fillers(text: str) -> list[int]:
     words = get_words(text)
-    return [i for i, word in enumerate(words) if word in fillers]
+    return [i for i, word in enumerate(words) if word.lower() in fillers]
 
 
 def get_wpm(text: str, file: str) -> int:
