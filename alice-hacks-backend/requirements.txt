@@ -3,6 +3,6 @@ accelerate
 datasets[audio]
 blacksheep~=1.2.18
 uvicorn
-torch~=2.0.0+cu118
+torch~=2.0.0
 pydub~=0.25.1
 openai

@@ -5,7 +5,6 @@ from transformers import pipeline
 from collections import Counter
 import re
 import torch
-import keys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -33,13 +32,8 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
     return common_words
 
 
-def get_fillers(text: str) -> list[int]:
-    words = get_words(text)
-    result = [i for i, word in enumerate(words) if word.lower() in filler_words]
-    for phrase in filler_phrases:
-        result.extend([words.index(m.group().strip(' .,!?').split()[0], m.start()) for m in
-                       re.finditer(phrase.lower(), text.lower())])
-
+def get_fillers(text: str) -> list[tuple[int, int]]:
+    result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in re.finditer(substring, text)]
     return result
 
 
@@ -67,3 +61,4 @@ def gpt_feedback(text: str) -> str:
             {"role": "user", "content": "Where was it played?"}
         ]
     )
+    return response
