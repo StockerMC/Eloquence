@@ -2,6 +2,7 @@
 	import { FileDropzone, ProgressBar } from "@skeletonlabs/skeleton";
 	import "iconify-icon";
 	import { enhance } from "$app/forms";
+	import { LinkedChart } from "svelte-tiny-linked-charts";
 
 	export let form;
 	$: if (form) {
@@ -21,7 +22,14 @@
 	form?.result.sentence_length.map((data) => {
 		sentenceLengths[data] = (sentenceLengths[data] || 0) + 1;
 	});
-	const sentenceLengthData = Object.entries(sentenceLengths);
+
+	let data = {
+		"2005-01-01": 25,
+		"2005-01-02": 20,
+		"2005-01-03": 18,
+		"2005-01-04": 17,
+		"2005-01-05": 21
+	}
 </script>
 
 <div class="flex justify-center items-center flex-col p-4">
@@ -66,10 +74,13 @@
 			on:click={() => (playLoadingAnimation = true)}
 			type="submit"
 			class="btn variant-filled-primary text-2xl w-3/4 mt-4"
-			>yuy
+			>
 			<span class="pt-1 pb-1"> Analyse </span>
 		</button>
 	</form>
+	<div class="block">
+		<LinkedChart {data} grow/>
+	</div>
 	<p>
 		{form?.success}
 		{form?.result["transcript"]}
