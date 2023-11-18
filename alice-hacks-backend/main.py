@@ -27,14 +27,9 @@ def most_common_words(text: str):
     return common_words
 
 
-def count_fillers(text: str):
-    # count the number of fillers in text
-    text = re.sub(r'.!\?', '', text.strip())
-    word_freq = Counter(map(lambda s: s.lower(), text.split()))
-    filler_count = 0
-    for filler in fillers:
-        filler_count += word_freq[filler]
-    return filler_count
+def get_fillers(text: str):
+    words = get_words(text)
+    return [i for word, i in enumerate(words) if word in fillers]
 
 
 def get_wpm(text: str, file: str):
