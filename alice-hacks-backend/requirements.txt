@@ -1,3 +1,5 @@
 transformers
 accelerate
 datasets[audio]
+blacksheep
+uvicorn
