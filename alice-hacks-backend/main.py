@@ -41,6 +41,3 @@ def get_wpm(text: str, file: str):
     audio = AudioSegment.from_file(file)
     return len(get_words(text)) / audio.duration_seconds / 60
 
-
-while True:
-    breakpoint()
