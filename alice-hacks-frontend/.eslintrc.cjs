@@ -32,6 +32,7 @@ module.exports = {
 		"no-var": "error",
 		"no-unused-vars": "warn",
 		"prefer-arrow-callback": "warn",
-		semi: "error"
+		semi: "error",
+		"linebreak-style": ["error", "unix"]
 	}
 };
