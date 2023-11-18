@@ -17,8 +17,6 @@ filler_words = ['uh', 'uhm', 'um', 'huh', 'ah', 'er']
 filler_phrases = ['like,', 'right,', ', right', 'so yeah,']
 
 client = OpenAI(api_key=OPENAI_API_KEY)
-system_prompt = ""
-
 
 def speech_to_text(file: str) -> str:
     return pipe(file)['text']  # type: ignore
@@ -36,7 +34,7 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
 
 
 def get_fillers(text: str) -> list[tuple[int, int]]:
-    result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in re.finditer(substring, text)]
+    result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in re.finditer(f'(\b{substring})|({substring}\b)|(\b{substring}\b)', text)]
     return result
 
 
@@ -54,14 +52,19 @@ def get_score(filler_count: int, wpm: int, sentence_length: list[int]) -> float:
     return (1 - (filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
 
 
+# TODO: ask user if it's a presentation, speech, etc.
+
+system_prompt = ""
+
 def gpt_feedback(text: str) -> str:
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Who won the world series in 2020?"},
-            {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-            {"role": "user", "content": "Where was it played?"}
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": "Who won the world series in 2020?"}
         ]
     )
+    print(response)
+    print(response.choices)
+    print(response.model_dump())
     return response
