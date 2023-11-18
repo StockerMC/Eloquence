@@ -2,15 +2,18 @@
 	import { FileDropzone, ProgressBar } from "@skeletonlabs/skeleton";
 	import "iconify-icon";
 	import { enhance } from "$app/forms";
-	import type { PageServerData } from "../../.svelte-kit/types/src/routes/$types";
 
-	export let form: PageServerData;
+	export let form;
 	$: if (form) {
 		playLoadingAnimation = false;
 	}
 
 	let playLoadingAnimation = false;
 	let file: FileList;
+
+	const getFillerWords = ([start, length]: [number, number]) => {
+		return form?.result['transcript'].substring(start, start + length);
+	};
 </script>
 
 <div class="flex justify-center items-center flex-col p-4">
@@ -59,6 +62,19 @@
 			<span class="pt-1 pb-1"> Analyse </span>
 		</button>
 	</form>
+	<p>
+		{form?.success} {form?.result['transcript']}
+	</p>
+	<h1>Fillers:</h1>
+	<p>
+		{#if form}
+			{#each (form.result['filler_indices'].map(getFillerWords)) as word}
+				<p>{word}</p>
+			{/each}
+		{/if}
+
+		<!-- {form?.result.words} -->
+	</p>
 </div>
 
 <style>
