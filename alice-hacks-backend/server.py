@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pydub import AudioSegment
 import main
 from blacksheep import Application, FromFiles
+import os
 
 import uuid
 
@@ -26,9 +27,15 @@ def home(input: FromFiles) -> Response:
     binary_data = value.data
 
     audio = AudioSegment.from_file(file=io.BytesIO(binary_data))
-    output_file = f"output-{(uuid.uuid4().bytes[:8]).decode()}.wav"
+    output_file = f"temp/output-{(str(uuid.uuid4())[:8])}.wav"
     audio.export(output_file, format="wav")
 
     txt = main.speech_to_text(output_file)
     filler_inds = main.get_fillers(txt)
-    return Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file))
+    print(f"text: {txt}")
+    print(f"filler_inds: {filler_inds}")
+    print(f"filler_count: {len(filler_inds)}")
+    print(f"wpm: {main.get_wpm(txt, output_file)}")
+    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file))
+    os.remove(output_file)
+    return res

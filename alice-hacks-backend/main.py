@@ -36,5 +36,5 @@ def get_fillers(text: str) -> list[int]:
 
 def get_wpm(text: str, file: str) -> int:
     audio = AudioSegment.from_file(file)
-    return len(get_words(text)) / audio.duration_seconds / 60
+    return len(get_words(text)) / (audio.duration_seconds / 60.0)
 
