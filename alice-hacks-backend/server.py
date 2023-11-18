@@ -14,5 +14,5 @@ class Audio:
 
 
 @get("/api")
-def home(request):
+def home(Audio):
     return "GET Example"
