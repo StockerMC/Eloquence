@@ -1,5 +1,7 @@
-transformers
+transformers~=4.35.2
 accelerate
 datasets[audio]
-blacksheep
+blacksheep~=1.2.18
 uvicorn
+torch
+pydub~=0.25.1
