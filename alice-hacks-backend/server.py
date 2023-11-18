@@ -22,6 +22,7 @@ class Response:
     words: list[str]
     sentence_length: list[int]
     overall_score: float
+    most_common_words: list[tuple[str, int]] = None
 
 
 @post("/api")
@@ -40,6 +41,7 @@ def home(input: FromFiles) -> Response:
     print(f"filler_count: {len(filler_inds)}")
     print(f"wpm: {main.get_wpm(txt, output_file)}")
     res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file), main.get_words(txt),
-                   main.get_sentence_length(txt), main.get_score(len(filler_inds), main.get_wpm(txt, output_file), main.get_sentence_length(txt)))
+                   main.get_sentence_length(txt), main.get_score(len(filler_inds), main.get_wpm(txt, output_file),
+                    main.get_sentence_length(txt)), main.most_common_words(txt))
     os.remove(output_file)
     return res
