@@ -3,15 +3,12 @@ from __future__ import annotations
 import re
 from collections import Counter
 
-import torch
 from env import OPENAI_API_KEY
 from openai import OpenAI
 from pydub import AudioSegment
-from transformers import pipeline
+from transformers import Pipeline
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-pipe = pipeline(model="distil-whisper/distil-large-v2", device=device)
+pipe: Pipeline
 
 filler_words = ['uh', 'uhm', 'um', 'huh', 'ah', 'er']
 filler_phrases = ['like,', 'right,', ', right', 'so yeah,']
@@ -20,7 +17,6 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 def speech_to_text(file: str) -> str:
     return pipe(file)['text']  # type: ignore
-
 
 def get_words(text: str) -> list[str]:
     text = re.sub(r'[.,!?]', '', text.strip())
@@ -52,16 +48,25 @@ def get_score(filler_count: int, wpm: int, sentence_length: list[int]) -> float:
     return (1 - (filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
 
 
-# TODO: ask user if it's a presentation, speech, etc.
+# TODO: ask user if it's a presentation, speech, etc. and for their time limit (e.g. what can they cut down on to fit the time limit)
+# TODO: also ask for the tone/setting
+# TODO: any other additional information they think is helpful to convey for better feedback
 
-system_prompt = ""
+system_prompt = """This is for a website called Eloquence where we aim to improve people's speaking skills by acting as Grammarly for speaking. Essentially, your job is to critique transcribed text in terms of the following, which is going to be judged based on the following criteria:
+1) Fluency (smoothness and flow, avoidance of filler words/pauses, coherency)
+2) Grammar (accuracy of language with grammar rules, clarity and accuracy, precision)
+3) Wording (thoughtful/impactful choice in vocabulary, effective arrangement, expression richness)
+4) Conciseness (efficiency in expression, direct communication, maintaining focus)
+5) Logical Structure (transitions, consistency, appropriateness)
+6) Communication (repetition and redundancy, engagement, clarity of expression)
+"""
 
 def gpt_feedback(text: str) -> str:
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "Who won the world series in 2020?"}
+            {"role": "user", "content": f"This is the transcript: {text}"}
         ]
     )
     print(response)

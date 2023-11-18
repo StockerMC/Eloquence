@@ -5,13 +5,18 @@ import os
 import uuid
 from dataclasses import dataclass
 
-import main
+import torch
+import util
 from blacksheep import Application, FromFiles
 from pydub import AudioSegment
+from transformers import pipeline
+from util import *
 
 app = Application()
 post = app.router.post
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+util.pipe = pipeline(model="distil-whisper/distil-large-v2", device=device)
 
 @dataclass
 class Response:
@@ -22,7 +27,7 @@ class Response:
     words: list[str]
     sentence_length: list[int]
     overall_score: float
-    most_common_words: list[tuple[str, int]] = None
+    most_common_words: list[tuple[str, int]]
 
 
 @post("/api")
@@ -34,14 +39,24 @@ def home(input: FromFiles) -> Response:
     output_file = f"temp/output-{(str(uuid.uuid4())[:8])}.wav"
     audio.export(output_file, format="wav")
 
-    txt = main.speech_to_text(output_file)
-    filler_inds = main.get_fillers(txt)
-    print(f"text: {txt}")
-    print(f"filler_inds: {filler_inds}")
-    print(f"filler_count: {len(filler_inds)}")
-    print(f"wpm: {main.get_wpm(txt, output_file)}")
-    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file), main.get_words(txt),
-                   main.get_sentence_length(txt), main.get_score(len(filler_inds), main.get_wpm(txt, output_file),
-                    main.get_sentence_length(txt)), main.most_common_words(txt))
+    text = speech_to_text(output_file)
+    filler_indices = get_fillers(text)
+    filler_count = len(filler_indices)
+    wpm = get_wpm(text, output_file)
+    sentence_length = get_sentence_length(text)
+
+    res = Response(
+        transcript=text,
+        filler_indices=filler_indices,
+        filler_count=filler_count,
+        wpm=wpm,
+        words=get_words(text),
+        sentence_length=get_sentence_length(text),
+        overall_score=get_score(filler_count, wpm, sentence_length),
+        most_common_words=most_common_words(text)
+    )
+
+    print(res)
     os.remove(output_file)
+
     return res
