@@ -28,6 +28,8 @@ class Response:
     sentence_length: list[int]
     overall_score: float
     most_common_words: list[tuple[str, int]]
+    detailed_feedback: str
+    duration: float
 
 
 @post("/api")
@@ -44,6 +46,7 @@ def home(input: FromFiles) -> Response:
     filler_count = len(filler_indices)
     wpm = get_wpm(text, output_file)
     sentence_length = get_sentence_length(text)
+    duration = get_total_duration(output_file)
 
     res = Response(
         transcript=text,
@@ -53,7 +56,9 @@ def home(input: FromFiles) -> Response:
         words=get_words(text),
         sentence_length=get_sentence_length(text),
         overall_score=get_score(filler_count, wpm, sentence_length),
-        most_common_words=most_common_words(text)
+        most_common_words=most_common_words(text),
+        detailed_feedback=gpt_feedback(text, duration),
+        duration=duration,
     )
 
     print(res)
