@@ -16,7 +16,7 @@ post = app.router.post
 @dataclass
 class Response:
     transcript: str
-    filler_indices: list[int]
+    filler_indices: list[tuple[int, int]]
     filler_count: int
     wpm: float
     words: list[str]

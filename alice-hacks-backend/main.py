@@ -28,12 +28,17 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
     common_words = word_freq.most_common(5)
     return common_words
 
-
-def get_fillers(text: str) -> list[int]:
+def get_fillers(text: str) -> list[tuple[int, int]]:
     words = get_words(text)
-    result = [i for i, word in enumerate(words) if word.lower() in filler_words]
-    for phrase in filler_phrases:
-        result.extend([words.index(m.group().strip(' .,!?').split()[0], m.start()) for m in re.finditer(phrase.lower(), text.lower())])
+    result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in re.finditer(substring, text)]
+    # result = [i for i, word in enumerate(words) if word.lower() in filler_words]
+    # for phrase in filler_phrases:
+    #     # result.extend([case_insensitive_index(words, m.group().split()[0], m.start()) for m in re.finditer(phrase.lower(), text.lower())])
+    #     words with 
+
+    #     for m in re.finditer(phrase.lower(), text.lower()):
+    #         breakpoint()
+    #         result.append(case_insensitive_index(text, m.group().split()[0], m.start()))
 
     return result
 
