@@ -33,7 +33,7 @@ def get_fillers(text: str) -> list[int]:
     words = get_words(text)
     result = [i for i, word in enumerate(words) if word.lower() in filler_words]
     for phrase in filler_phrases:
-        result.extend([m.start() for m in re.finditer(phrase.lower(), text.lower())])
+        result.extend([words.index(m.group().strip(' .,!?').split()[0], m.start()) for m in re.finditer(phrase.lower(), text.lower())])
 
     return result
 

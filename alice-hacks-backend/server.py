@@ -16,9 +16,10 @@ post = app.router.post
 @dataclass
 class Response:
     transcript: str
-    filler_index: list[int]
+    filler_indices: list[int]
     filler_count: int
     wpm: float
+    words: list[str]
 
 
 @post("/api")
@@ -36,6 +37,7 @@ def home(input: FromFiles) -> Response:
     print(f"filler_inds: {filler_inds}")
     print(f"filler_count: {len(filler_inds)}")
     print(f"wpm: {main.get_wpm(txt, output_file)}")
-    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file))
+    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file), main.get_words(txt))
     os.remove(output_file)
+    
     return res
