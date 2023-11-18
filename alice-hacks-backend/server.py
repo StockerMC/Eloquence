@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import io
+import os
+import uuid
 from dataclasses import dataclass
-from pydub import AudioSegment
+
 import main
 from blacksheep import Application, FromFiles
-import os
-
-import uuid
+from pydub import AudioSegment
 
 app = Application()
 post = app.router.post

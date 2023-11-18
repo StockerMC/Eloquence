@@ -1,10 +1,13 @@
 from __future__ import annotations
+
+import re
+from collections import Counter
+
+import torch
+from env import OPENAI_API_KEY
 from openai import OpenAI
 from pydub import AudioSegment
 from transformers import pipeline
-from collections import Counter
-import re
-import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -13,7 +16,7 @@ pipe = pipeline(model="distil-whisper/distil-large-v2", device=device)
 filler_words = ['uh', 'uhm', 'um', 'huh', 'ah', 'er']
 filler_phrases = ['like,', 'right,', ', right', 'so yeah,']
 
-client = OpenAI()
+client = OpenAI(api_key=OPENAI_API_KEY)
 system_prompt = ""
 
 
