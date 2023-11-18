@@ -20,6 +20,8 @@ class Response:
     filler_count: int
     wpm: float
     words: list[str]
+    sentence_length: list[int]
+    overall_score: float
 
 
 @post("/api")
@@ -37,7 +39,7 @@ def home(input: FromFiles) -> Response:
     print(f"filler_inds: {filler_inds}")
     print(f"filler_count: {len(filler_inds)}")
     print(f"wpm: {main.get_wpm(txt, output_file)}")
-    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file), main.get_words(txt))
+    res = Response(txt, filler_inds, len(filler_inds), main.get_wpm(txt, output_file), main.get_words(txt),
+                   main.get_sentence_length(txt), )
     os.remove(output_file)
-    
     return res
