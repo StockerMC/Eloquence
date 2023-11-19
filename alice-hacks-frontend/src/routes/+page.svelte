@@ -13,7 +13,8 @@
 	let isInViewTop: boolean;
 	let isInViewBottom: boolean;
 	const options: Options = {
-		unobserveOnEnter: false
+		unobserveOnEnter: false,
+		rootMargin: "50px"
 	};
 
 	export let form;
@@ -180,6 +181,7 @@
 						<div class="flex flex-col card card-hover variant-glass-tertiary gap-2 p-8">
 							<h1 class="font-bold text-3xl pb-2">Sentence Analysis:</h1>
 							<LinkedChart
+								width={350}
 								data={sentenceLengths}
 								grow
 								fill="#EE93B8"
@@ -202,6 +204,7 @@
 						<div class="flex flex-col gap-2 card card-hover variant-glass-tertiary p-8">
 							<h1 class="font-bold text-3xl h-full pb-2">Word Analysis:</h1>
 							<LinkedChart
+								width={350}
 								data={mostUsedWords}
 								grow
 								fill="#EE93B8"

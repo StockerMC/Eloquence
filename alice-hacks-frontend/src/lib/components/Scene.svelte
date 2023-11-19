@@ -8,6 +8,7 @@
 
 	let rotation = 0;
 	let speed = 2;
+	let yPos = 1;
 	useFrame((state, delta) => {
 		rotation += delta * speed;
 	});
@@ -25,7 +26,7 @@
 
 <T.Mesh
 	rotation.y={rotation}
-	position.y={1}
+	position.y={yPos}
 	scale={$scale}
 	on:pointerenter={() => {
 		scale.set(2.5);

@@ -10,7 +10,7 @@ export const theme: CustomThemeConfig = {
 		"--theme-font-color-dark": "255 255 255",
 		"--theme-rounded-base": "12px",
 		"--theme-rounded-container": "8px",
-		"--theme-border-base": "1px",
+		"--theme-border-base": "2px",
 		// =~= Theme On-X Colors =~=
 		"--on-primary": "0 0 0",
 		"--on-secondary": "0 0 0",
