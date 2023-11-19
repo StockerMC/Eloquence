@@ -7,14 +7,14 @@
 2) `cd Eloquence`
 3) `cd alice-hacks-backend`
 4) `python -m venv venv`
-5) `chmod +x venv/bin/activate` (run only on linux, if this command fails, try a different activate file)
-6) venv/scripts/activate (Windows) or venv/bin/activate (Linux)`
+5) LINUX ONLY: `chmod +x venv/bin/activate` (if this command fails, try a different activate file)
+6)` venv/scripts/activate` (Windows) or `venv/bin/activate` (Linux)
 7) python -m pip install -r requirements.txt` - NOTE: It will take quite a while to download all the models, but you only need to do this once
 8) `cd ../alice-hacks-frontend`
 9) `npm i`
 
 # Running the backend
-1. `cd` into `alice-hacks-backend` folder
+1. `cd` into the `alice-hacks-backend` folder
 2. Copy `env.example.py` into `env.py` and set your `OPENAI_API_KEY`
 3. Run `uvicorn server:app --port 3000` to start the backend server. Keep note of the ip address that is outputted.
 
