@@ -10,6 +10,8 @@ interface Response {
 	most_common_words: [string, number][];
 	sentence_length: number[];
 	overall_score: number;
+    detailed_feedback: string
+    duration: number
 }
 
 export const actions = {
