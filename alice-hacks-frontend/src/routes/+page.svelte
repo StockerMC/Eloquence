@@ -7,6 +7,14 @@
 	import { LinkedChart, LinkedLabel, LinkedValue } from "svelte-tiny-linked-charts";
 	import App from "$lib/components/App.svelte";
 	import { browser } from "$app/environment";
+	import { inview } from "svelte-inview";
+	import type { Options } from "svelte-inview";
+
+	let isInViewTop: boolean;
+	let isInViewBottom: boolean;
+	const options: Options = {
+		unobserveOnEnter: false
+	};
 
 	export let form;
 	$: if (form) {
@@ -159,10 +167,18 @@
 		<div class="bg-tertiary-900 w-full h-1 mt-48" id="bottom" />
 		<div class=" pt-24 pb-24 bg-secondary-50 flex justify-center w-full">
 			<div class="flex flex-col gap-32">
-				<div class="flex gap-4">
+				<div
+					class="flex gap-4 opacity-0 translate-y-64"
+					use:inview={options}
+					on:inview_change={(event) => {
+						const { inView } = event.detail;
+						isInViewTop = inView;
+					}}
+					class:animate={isInViewTop || isInViewBottom}
+				>
 					<div class="box-small flex flex-col gap-4 justify-center">
 						<div class="flex flex-col card card-hover variant-glass-tertiary gap-2 p-8">
-							<h1 class="font-bold text-xl pb-2">Sentence Analysis:</h1>
+							<h1 class="font-bold text-3xl pb-2">Sentence Analysis:</h1>
 							<LinkedChart
 								data={sentenceLengths}
 								grow
@@ -170,21 +186,21 @@
 								linked="link-1"
 								uid="link-1"
 							/>
-							<span class="text-m">
+							<span class="text-xl">
 								Average sentence length:
 								{averageSentenceLength.toFixed(1)} words
 							</span>
-							<span class="text-m">
+							<span class="text-xl">
 								Sentence length:
 								<LinkedLabel linked="link-1" empty="N/A" /> words
 							</span>
-							<span class="text-m">
+							<span class="text-xl">
 								Count:
 								<LinkedValue uid="link-1" empty="N/A" /> sentences
 							</span>
 						</div>
 						<div class="flex flex-col gap-2 card card-hover variant-glass-tertiary p-8">
-							<h1 class="font-bold text-xl h-full pb-2">Word Analysis:</h1>
+							<h1 class="font-bold text-3xl h-full pb-2">Word Analysis:</h1>
 							<LinkedChart
 								data={mostUsedWords}
 								grow
@@ -192,11 +208,11 @@
 								linked="link-2"
 								uid="link-2"
 							/>
-							<span class="text-m">
+							<span class="text-xl">
 								Word:
 								<LinkedLabel linked="link-2" empty="N/A" />
 							</span>
-							<span class="text-m">
+							<span class="text-xl">
 								Count:
 								<LinkedValue uid="link-2" empty="N/A" /> times
 							</span>
@@ -205,7 +221,7 @@
 					<div
 						class="box-large h-full card card-hover variant-glass-tertiary p-8 flex flex-col gap-4 align-middle justify-center items-center border-4 border-tertiary-400"
 					>
-						<h1 class="font-bold pb-2 text-3xl">Overall Score</h1>
+						<h1 class="font-bold pb-2 text-4xl">Overall Score</h1>
 						<ProgressRadial
 							value={form.result.overall_score * 100}
 							stroke={80}
@@ -228,7 +244,9 @@
 					<div class="box-small card card-hover variant-glass-tertiary h-full p-8">
 						<h1 class="font-bold text-3xl pb-2">Stats:</h1>
 						<div class="card p-2 variant-filled-tertiary" data-popup="popupHover">
-							<p class="text-sm leading-4">Number of words spoken in a row without fillers</p>
+							<p class="text-sm leading-4">
+								Number of words spoken in a row without fillers
+							</p>
 							<div class="arrow variant-filled-tertiary" />
 						</div>
 						<br />
@@ -243,8 +261,8 @@
 							</span>
 							<br />
 							<br />
-							<span class="font-semibold">Average words per minute: </span>
-							{form?.result.wpm.toFixed(1)} WPM
+							<span class="font-semibold">Average WPM: </span>
+							{form?.result.wpm.toFixed(1)}
 							<br />
 							<br />
 							<span class="font-semibold">Grammar mistakes: </span>
@@ -253,11 +271,21 @@
 					</div>
 				</div>
 				<div class="bg-tertiary-900 relative rule h-1" id="bottom" />
-				<div class="flex gap-4">
+				<div
+					class="flex gap-4 opacity-0 translate-y-64"
+					use:inview={options}
+					on:inview_change={(event) => {
+						const { inView } = event.detail;
+						isInViewBottom = inView;
+					}}
+					class:animate={isInViewBottom}
+				>
 					<div class="flex flex-col gap-4">
 						<div class="card card-hover variant-glass-tertiary p-8 box-small">
-							<h1 class="font-bold text-xl pb-2">List Of Filler Words Detected:</h1>
-							<p class="text-lg">{fillersFormatted === "" ? "N/A" : fillersFormatted}</p>
+							<h1 class="font-bold text-3xl pb-2">List Of Filler Words Detected:</h1>
+							<p class="text-xl">
+								{fillersFormatted === "" ? "N/A" : fillersFormatted}
+							</p>
 						</div>
 						<div class="card card-hover variant-glass-tertiary h-full p-8 box-small">
 							<h1 class="font-bold text-3xl pb-4">Transcript:</h1>
@@ -276,14 +304,18 @@
 							.replaceAll('\\"', '"')
 							.replaceAll("\\\\", "\\")
 							.split("\n") as line}
-							{#if !isNaN(parseInt(line.trim().charAt(0))) || line.toLowerCase().startsWith("overall")}
-								<br>
-								<p class:font-semibold={!isNaN(parseInt(line.trim().charAt(0)))}
-								   class="text-lg leading-8">{line}</p>
-							{:else}
-								{#if line.trim().charAt(0) === "-"}
-									<p class="text-lg leading-8">{"•" + line.substring(1)}</p>
-								{/if}
+							{#if !isNaN(parseInt(line.trim().charAt(0))) || line
+									.toLowerCase()
+									.startsWith("overall")}
+								<br />
+								<p
+									class:font-semibold={!isNaN(parseInt(line.trim().charAt(0)))}
+									class="text-xl leading-8"
+								>
+									{line}
+								</p>
+							{:else if line.trim().charAt(0) === "-"}
+								<p class="text-xl leading-8">{"•" + line.substring(1)}</p>
 							{/if}
 						{/each}
 					</div>
@@ -294,31 +326,37 @@
 </div>
 
 <style>
-    .title {
-        font-size: 8em;
-    }
+	.title {
+		font-size: 8em;
+	}
 
-    .icon {
-        font-size: 3rem;
-    }
+	.icon {
+		font-size: 3rem;
+	}
 
-    .icon-large {
-        font-size: 5rem;
-    }
+	.icon-large {
+		font-size: 5rem;
+	}
 
-    .box-small {
-        width: 22vw;
-    }
+	.box-small {
+		width: 22vw;
+	}
 
-    .box-large {
-        width: 30vw;
-    }
+	.box-large {
+		width: 30vw;
+	}
 
-    .box-larger {
-        width: 53vw;
-    }
+	.box-larger {
+		width: 53vw;
+	}
 
-    .rule {
-        width: 100%;
-    }
+	.rule {
+		width: 100%;
+	}
+
+	.animate {
+		transition: all 0.5s ease-in-out;
+		opacity: 1;
+		transform: none;
+	}
 </style>
