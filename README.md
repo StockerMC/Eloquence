@@ -15,7 +15,8 @@
 
 # Running the backend
 1. `cd` into `alice-hacks-backend` folder
-2. Run `uvicorn server:app --port 3000` to start the backend server. Keep note of the ip address that is outputted.
+2. Copy `env.example.py` into `env.py` and set your `OPENAI_API_KEY`
+3. Run `uvicorn server:app --port 3000` to start the backend server. Keep note of the ip address that is outputted.
 
 # Running the frontend
 1. `cd` into the `alice-hacks-frontend` folder
