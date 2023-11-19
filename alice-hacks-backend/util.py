@@ -57,6 +57,14 @@ def get_sentence_length(text: str) -> list[int]:
     return [len(get_words(sentence)) for sentence in sentences]
 
 
+def get_max_combo(filler_indices) -> int:
+    if len(filler_indices) == 0:
+        return 0
+    filler_indices = [(0, 0)] + filler_indices + [(len(filler_indices), 0)]
+    max_combo = max([filler_indices[i][0] - filler_indices[i - 1][0] for i in range(1, len(filler_indices))])
+    return max_combo
+
+
 # TODO: make harsher
 def get_score(filler_count: int, wpm: float, sentence_length: list[int]) -> float:
     ans = (1 - (5 * filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
