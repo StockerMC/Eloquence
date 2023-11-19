@@ -87,10 +87,11 @@ export const theme: CustomThemeConfig = {
 		"--color-error-800": "130 37 23", // #822517
 		"--color-error-900": "106 30 19", // #6a1e13
 		// surface | #d1b0a3
+		// 253, 226, 225
 		"--color-surface-50": "248 243 241", // #f8f3f1
 		"--color-surface-100": "246 239 237", // #f6efed
 		"--color-surface-200": "244 235 232", // #f4ebe8
-		"--color-surface-300": "237 223 218", // #eddfda
+		"--color-surface-300": "253, 226, 225", // #fde2e1
 		"--color-surface-400": "223 200 191", // #dfc8bf
 		"--color-surface-500": "209 176 163", // #d1b0a3
 		"--color-surface-600": "188 158 147", // #bc9e93
