@@ -158,11 +158,11 @@
 		</button>
 		<div class="bg-tertiary-900 w-full h-1 mt-48" id="bottom" />
 		<div class=" pt-24 pb-24 bg-secondary-50 flex justify-center w-full">
-			<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-32">
 				<div class="flex gap-4">
-					<div class="box-small flex flex-col gap-8 justify-center">
-						<div class="flex flex-col card card-hover variant-glass-tertiary gap-2 p-4">
-							<h1 class="font-bold pb-2">Sentence Analysis:</h1>
+					<div class="box-small flex flex-col gap-4 justify-center">
+						<div class="flex flex-col card card-hover variant-glass-tertiary gap-2 p-8">
+							<h1 class="font-bold text-xl pb-2">Sentence Analysis:</h1>
 							<LinkedChart
 								data={sentenceLengths}
 								grow
@@ -170,21 +170,21 @@
 								linked="link-1"
 								uid="link-1"
 							/>
-							<span class="text-sm">
+							<span class="text-m">
 								Average sentence length:
 								{averageSentenceLength.toFixed(1)} words
 							</span>
-							<span class="text-sm">
+							<span class="text-m">
 								Sentence length:
 								<LinkedLabel linked="link-1" empty="N/A" /> words
 							</span>
-							<span class="text-sm">
+							<span class="text-m">
 								Count:
 								<LinkedValue uid="link-1" empty="N/A" /> sentences
 							</span>
 						</div>
-						<div class="flex flex-col gap-2 card card-hover variant-glass-tertiary p-4">
-							<h1 class="font-bold pb-2">Word Analysis:</h1>
+						<div class="flex flex-col gap-2 card card-hover variant-glass-tertiary p-8">
+							<h1 class="font-bold text-xl h-full pb-2">Word Analysis:</h1>
 							<LinkedChart
 								data={mostUsedWords}
 								grow
@@ -192,20 +192,20 @@
 								linked="link-2"
 								uid="link-2"
 							/>
-							<span class="text-sm">
+							<span class="text-m">
 								Word:
 								<LinkedLabel linked="link-2" empty="N/A" />
 							</span>
-							<span class="text-sm">
+							<span class="text-m">
 								Count:
 								<LinkedValue uid="link-2" empty="N/A" /> times
 							</span>
 						</div>
 					</div>
 					<div
-						class="box-large card card-hover variant-glass-tertiary p-4 flex flex-col gap-8 align-middle justify-center items-center border-4 border-tertiary-400"
+						class="box-large h-full card card-hover variant-glass-tertiary p-8 flex flex-col gap-4 align-middle justify-center items-center border-4 border-tertiary-400"
 					>
-						<h1 class="font-bold pb-2 text-2xl">Overall Score</h1>
+						<h1 class="font-bold pb-2 text-3xl">Overall Score</h1>
 						<ProgressRadial
 							value={form.result.overall_score * 100}
 							stroke={80}
@@ -213,7 +213,7 @@
 							fill={"fill-" + letterColours[scoreToLetter(form.result.overall_score)]}
 							meter="stroke-tertiary-500"
 							font={128}
-							width="w-48"
+							width="w-52"
 						>
 							{scoreToLetter(form.result.overall_score)}
 						</ProgressRadial>
@@ -225,38 +225,47 @@
 							{(form.result.overall_score * 100).toFixed(2)}%
 						</h1>
 					</div>
-					<div class="box-small card card-hover variant-glass-tertiary p-4">
-						<h1 class="font-bold pb-2">Stats:</h1>
+					<div class="box-small card card-hover variant-glass-tertiary h-full p-8">
+						<h1 class="font-bold text-3xl pb-2">Stats:</h1>
 						<div class="card p-2 variant-filled-tertiary" data-popup="popupHover">
 							<p class="text-sm leading-4">Number of words spoken in a row without fillers</p>
 							<div class="arrow variant-filled-tertiary" />
 						</div>
-						<h1>
-							Filler count: {form?.result.filler_count}
+						<br />
+						<h1 class="text-xl">
+							<span class="font-semibold">Filler word count: </span>
+							{form?.result.filler_count}
+							<br />
 							<br />
 							<span class="[&>*]:pointer-events-none" use:popup={popupHover}>
-								Highest combo: {form?.result.max_combo} words
+								<span class="font-semibold">Highest combo: </span>
+								{form?.result.max_combo} words
 							</span>
 							<br />
-							Average word per minute: {form?.result.wpm.toFixed(1)} WPM
 							<br />
-							Grammar mistakes: {form?.result.grammar_mistakes}
+							<span class="font-semibold">Average words per minute: </span>
+							{form?.result.wpm.toFixed(1)} WPM
+							<br />
+							<br />
+							<span class="font-semibold">Grammar mistakes: </span>
+							{form?.result.grammar_mistakes}
 						</h1>
 					</div>
 				</div>
-				<div class="flex gap-8">
-					<div class="flex flex-col gap-8">
-						<div class="card card-hover variant-glass-tertiary p-4 box-small">
-							<h1 class="font-bold pb-2">List Of Filler Words Detected:</h1>
-							<p>{fillersFormatted === "" ? "N/A" : fillersFormatted}</p>
+				<div class="bg-tertiary-900 relative rule h-1" id="bottom" />
+				<div class="flex gap-4">
+					<div class="flex flex-col gap-4">
+						<div class="card card-hover variant-glass-tertiary p-8 box-small">
+							<h1 class="font-bold text-xl pb-2">List Of Filler Words Detected:</h1>
+							<p class="text-lg">{fillersFormatted === "" ? "N/A" : fillersFormatted}</p>
 						</div>
-						<div class="card card-hover variant-glass-tertiary p-4 box-small">
-							<h1 class="font-bold pb-2">Transcript:</h1>
-							<p>{form.result.transcript}</p>
+						<div class="card card-hover variant-glass-tertiary h-full p-8 box-small">
+							<h1 class="font-bold text-3xl pb-4">Transcript:</h1>
+							<p class="text-xl leading-8">{form.result.transcript}</p>
 						</div>
 					</div>
-					<div class="card card-hover variant-glass-tertiary p-4 box-larger">
-						<h1 class="font-bold pb-2 leading-6">Feedback:</h1>
+					<div class="card card-hover variant-glass-tertiary h-full p-8 box-larger">
+						<h1 class="font-bold pb-2 text-3xl leading-6">Feedback:</h1>
 						{#each form.result.detailed_feedback
 							.replaceAll("\\n", "\n")
 							.replaceAll("\\t", "\t")
@@ -267,7 +276,15 @@
 							.replaceAll('\\"', '"')
 							.replaceAll("\\\\", "\\")
 							.split("\n") as line}
-							<p>{line}</p>
+							{#if !isNaN(parseInt(line.trim().charAt(0))) || line.toLowerCase().startsWith("overall")}
+								<br>
+								<p class:font-semibold={!isNaN(parseInt(line.trim().charAt(0)))}
+								   class="text-lg leading-8">{line}</p>
+							{:else}
+								{#if line.trim().charAt(0) === "-"}
+									<p class="text-lg leading-8">{"•" + line.substring(1)}</p>
+								{/if}
+							{/if}
 						{/each}
 					</div>
 				</div>
@@ -298,6 +315,10 @@
     }
 
     .box-larger {
-        width: 54vw;
+        width: 53vw;
+    }
+
+    .rule {
+        width: 100%;
     }
 </style>
