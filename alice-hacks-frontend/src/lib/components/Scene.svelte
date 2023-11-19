@@ -7,8 +7,9 @@
 	const scale = spring(2);
 
 	let rotation = 0;
+	let speed = 2;
 	useFrame((state, delta) => {
-		rotation += delta;
+		rotation += delta * speed;
 	});
 </script>
 
@@ -20,13 +21,20 @@
 	}}
 />
 <T.DirectionalLight position={[0, 5, 5]} castShadow intensity={4} />
+<T.AmbientLight intensity={1.5} />
 
 <T.Mesh
 	rotation.y={rotation}
 	position.y={1}
 	scale={$scale}
-	on:pointerenter={() => scale.set(2.5)}
-	on:pointerleave={() => scale.set(2)}
+	on:pointerenter={() => {
+		scale.set(2.5);
+		speed = 4;
+	}}
+	on:pointerleave={() => {
+		scale.set(2);
+		speed = 2;
+	}}
 	castShadow
 >
 	<T.IcosahedronGeometry />
