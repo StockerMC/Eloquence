@@ -4,11 +4,9 @@ import io
 import os
 import uuid
 from dataclasses import dataclass
-
 import torch
 import util
 from blacksheep import Application, FromFiles
-from pydub import AudioSegment
 from transformers import pipeline
 from util import *
 
