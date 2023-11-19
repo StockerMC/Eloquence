@@ -6,3 +6,4 @@ uvicorn
 torch~=2.0.0
 pydub~=0.25.1
 openai
+language-tool-python

@@ -4,11 +4,9 @@ import io
 import os
 import uuid
 from dataclasses import dataclass
-
 import torch
 import util
 from blacksheep import Application, FromFiles
-from pydub import AudioSegment
 from transformers import pipeline
 from util import *
 
@@ -30,6 +28,7 @@ class Response:
     most_common_words: list[tuple[str, int]]
     detailed_feedback: str
     duration: float
+    grammar_mistakes: int
 
 
 @post("/api")
@@ -59,6 +58,7 @@ def home(input: FromFiles) -> Response:
         most_common_words=most_common_words(text),
         detailed_feedback=gpt_feedback(text, duration),
         duration=duration,
+        grammar_mistakes=get_grammar_mistakes(text),
     )
 
     print(res)
