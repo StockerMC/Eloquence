@@ -54,7 +54,7 @@ def get_score(filler_count: int, wpm: float, sentence_length: list[int]) -> floa
 # TODO: also ask for the tone/setting
 # TODO: any other additional information they think is helpful to convey for better feedback
 
-system_prompt = """This is for a website called Eloquence where we aim to improve people's speaking skills by acting as Grammarly for speaking. Essentially, your job is to critique transcribed text in terms of the following, which is going to be judged based on the following criteria:
+system_prompt = """This is for a website called Eloquence where we aim to improve people's speaking skills by acting as Grammarly for speaking. Essentially, your job is to give constructive criticism for transcribed text, referring to the speaker as 'You' - don't be too mean. You are going to use the following criteria:
 1) Fluency (smoothness and flow, avoidance of filler words/pauses, coherency)
 2) Grammar (accuracy of language with grammar rules, clarity and accuracy, precision)
 3) Wording (thoughtful/impactful choice in vocabulary, effective arrangement, expression richness)
@@ -77,7 +77,7 @@ def gpt_feedback(text: str, length: float) -> str:
             {"role": "user", "content": f"This is the transcript: {text}"}
         ]
     )
-    print(response)
-    print(response.choices)
-    print(response.model_dump())
+    print(response.choices[0].message.content)
+    # print(response.choices)
+    # print(response.model_dump())
     return response.choices[0].message.content or 'nothing returned from gpt :('
