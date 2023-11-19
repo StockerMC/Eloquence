@@ -109,7 +109,7 @@
 		</div>
 		{#if playLoadingAnimation}
 			<div class="w-3/4 mt-4">
-				<ProgressBar value={undefined} meter="bg-primary-800" />
+				<ProgressBar value={undefined} meter="bg-tertiary-500" />
 			</div>
 		{/if}
 		<button
@@ -118,7 +118,7 @@
 				form = null;
 			}}
 			type="submit"
-			class="btn variant-filled-primary text-2xl w-3/4 mt-4"
+			class="btn variant-filled-tertiary text-2xl w-3/4 mt-4"
 		>
 			<span class="pt-1 pb-1"> Analyse </span>
 		</button>
@@ -237,8 +237,7 @@
 
 <style>
 	.title {
-		font-size: 12em;
-		font-family: "MrsSaintDelafield", cursive;
+		font-size: 8em;
 	}
 
 	.icon {

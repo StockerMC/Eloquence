@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
 	ssr: {
-		noExternal: ['three']
+		noExternal: ["three"]
 	},
 	plugins: [sveltekit()]
 });
