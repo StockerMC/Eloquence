@@ -33,10 +33,12 @@ def get_fillers(text: str) -> list[tuple[int, int]]:
     result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in re.finditer(f'(\b{substring})|({substring}\b)|(\b{substring}\b)', text)]
     return result
 
-
-def get_wpm(text: str, file: str) -> int:
+def get_total_duration(file: str) -> float:
     audio = AudioSegment.from_file(file)
-    return len(get_words(text)) / (audio.duration_seconds / 60.0)
+    return audio.duration_seconds
+
+def get_wpm(text: str, file: str) -> float:
+    return len(get_words(text)) / (get_total_duration(file) / 60.0)
 
 
 def get_sentence_length(text: str) -> list[int]:
@@ -44,7 +46,7 @@ def get_sentence_length(text: str) -> list[int]:
     return [len(get_words(sentence)) for sentence in sentences]
 
 
-def get_score(filler_count: int, wpm: int, sentence_length: list[int]) -> float:
+def get_score(filler_count: int, wpm: float, sentence_length: list[int]) -> float:
     return (1 - (filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
 
 
@@ -59,17 +61,23 @@ system_prompt = """This is for a website called Eloquence where we aim to improv
 4) Conciseness (efficiency in expression, direct communication, maintaining focus)
 5) Logical Structure (transitions, consistency, appropriateness)
 6) Communication (repetition and redundancy, engagement, clarity of expression)
+
+Here is some more information to help you provide detailed feedback that will be shown directly to the user:
+- The audio file length is {length} seconds long
+
 """
 
-def gpt_feedback(text: str) -> str:
+def gpt_feedback(text: str, length: float) -> str:
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": system_prompt},
+            {"role": "system", "content": system_prompt.format(
+                length=round(length)
+            )},
             {"role": "user", "content": f"This is the transcript: {text}"}
         ]
     )
     print(response)
     print(response.choices)
     print(response.model_dump())
-    return response
+    return response.choices[0].message.content or 'nothing returned from gpt :('
