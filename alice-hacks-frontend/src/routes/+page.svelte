@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { FileDropzone, ProgressBar, ProgressRadial } from "@skeletonlabs/skeleton";
+	import type { PopupSettings } from "@skeletonlabs/skeleton";
+	import { popup } from "@skeletonlabs/skeleton";
 	import "iconify-icon";
 	import { enhance } from "$app/forms";
 	import { LinkedChart, LinkedLabel, LinkedValue } from "svelte-tiny-linked-charts";
 	import App from "$lib/components/App.svelte";
+	import { browser } from "$app/environment";
 
 	export let form;
 	$: if (form) {
@@ -73,10 +76,13 @@
 
 	let fillersFormatted: string;
 
-	const observer = new MutationObserver(() => {
-		scrollToElement("bottom");
-	});
-	observer.observe(document.body, { childList: true, subtree: true });
+	let observer: MutationObserver;
+	if (browser) {
+		observer = new MutationObserver(() => {
+			scrollToElement("bottom");
+		});
+		observer.observe(document.body, { childList: true, subtree: true });
+	}
 
 	const scrollToElement = (id: string) => {
 		const element = document.getElementById(id);
@@ -84,11 +90,18 @@
 			element.scrollIntoView({ behavior: "smooth" });
 		}
 	};
+
+	const popupHover: PopupSettings = {
+		event: "hover",
+		target: "popupHover",
+		placement: "top"
+	};
 </script>
 
-<div class="stroke- flex justify-center items-center flex-col bg-surface-300">
-	<h1 class="mt-24 mb-12 title p-12">Eloquence</h1>
-	<div class="flex h-36 w-screen justify-start">
+<div class="flex justify-center items-center flex-col bg-surface-300">
+	<h1 class="mt-24 mb-8 title p-12">Eloquence.</h1>
+	<h2 class="text-3xl mb-12">Your words, perfected</h2>
+	<div class="flex h-36 mb-24 w-screen justify-start">
 		<App />
 	</div>
 	<form
@@ -104,6 +117,7 @@
 				required
 				accept="audio/*"
 				enctype="multipart/form-data"
+				border="border-solid"
 			>
 				<svelte:fragment slot="lead">
 					<iconify-icon icon="bi:upload" class="icon" />
@@ -133,17 +147,17 @@
 				form = null;
 			}}
 			type="submit"
-			class="btn variant-filled-tertiary text-2xl w-3/4 mt-4"
+			class="btn variant-filled-tertiary bg-tertiary-500 text-2xl w-3/4 mt-4"
 		>
-			<span class="pt-1 pb-1"> Analyse </span>
+			<span class="pt-1 pb-1 text-surface-50">Analyse</span>
 		</button>
 	</form>
 	{#if form?.result}
 		<button on:click={() => scrollToElement("bottom")}>
-			<iconify-icon icon="ei:arrow-down" class="icon-large mt-8" />
+			<iconify-icon icon="ei:arrow-down" class="icon-large pt-12" />
 		</button>
-		<div class="bg-tertiary-900 w-full h-1 mt-48" />
-		<div class=" pt-24 pb-24 bg-secondary-50 flex justify-center w-full" id="bottom">
+		<div class="bg-tertiary-900 w-full h-1 mt-48" id="bottom" />
+		<div class=" pt-24 pb-24 bg-secondary-50 flex justify-center w-full">
 			<div class="flex flex-col gap-4">
 				<div class="flex gap-4">
 					<div class="box-small flex flex-col gap-8 justify-center">
@@ -213,10 +227,16 @@
 					</div>
 					<div class="box-small card card-hover variant-glass-tertiary p-4">
 						<h1 class="font-bold pb-2">Stats:</h1>
+						<div class="card p-2 variant-filled-tertiary" data-popup="popupHover">
+							<p class="text-sm leading-4">Number of words spoken in a row without fillers</p>
+							<div class="arrow variant-filled-tertiary" />
+						</div>
 						<h1>
 							Filler count: {form?.result.filler_count}
 							<br />
-							Highest combo: {form?.result.max_combo} words
+							<span class="[&>*]:pointer-events-none" use:popup={popupHover}>
+								Highest combo: {form?.result.max_combo} words
+							</span>
 							<br />
 							Average word per minute: {form?.result.wpm.toFixed(1)} WPM
 							<br />
@@ -224,7 +244,7 @@
 						</h1>
 					</div>
 				</div>
-				<div class="flex gap-4">
+				<div class="flex gap-8">
 					<div class="flex flex-col gap-8">
 						<div class="card card-hover variant-glass-tertiary p-4 box-small">
 							<h1 class="font-bold pb-2">List Of Filler Words Detected:</h1>
@@ -257,27 +277,27 @@
 </div>
 
 <style>
-	.title {
-		font-size: 8em;
-	}
+    .title {
+        font-size: 8em;
+    }
 
-	.icon {
-		font-size: 3rem;
-	}
+    .icon {
+        font-size: 3rem;
+    }
 
-	.icon-large {
-		font-size: 5rem;
-	}
+    .icon-large {
+        font-size: 5rem;
+    }
 
-	.box-small {
-		width: 22vw;
-	}
+    .box-small {
+        width: 22vw;
+    }
 
-	.box-large {
-		width: 30vw;
-	}
+    .box-large {
+        width: 30vw;
+    }
 
-	.box-larger {
-		width: 54vw;
-	}
+    .box-larger {
+        width: 54vw;
+    }
 </style>

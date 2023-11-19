@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@floating-ui/dom": "^1.5.3",
 		"@threlte/core": "^6.1.1",
 		"@threlte/extras": "^7.5.1",
 		"@threlte/theatre": "^2.1.3",
