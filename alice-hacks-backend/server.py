@@ -66,7 +66,7 @@ def home(input: FromFiles) -> Response:
     wpm = get_wpm(text, output_file)
     sentence_length = get_sentence_length(text)
     duration = get_total_duration(output_file)
-
+    max_combo = get_max_combo(filler_indices, len(words))
     res = Response(
         transcript=text,
         filler_indices=filler_indices,
@@ -79,8 +79,8 @@ def home(input: FromFiles) -> Response:
         detailed_feedback=gpt_feedback(text, duration),
         duration=duration,
         grammar_mistakes=get_grammar_mistakes(text),
-        max_combo=get_max_combo(filler_indices),
-        full_combo=get_max_combo(filler_indices) == len(words)
+        max_combo=max_combo,
+        full_combo=max_combo == len(words)
     )
 
     print(res)
