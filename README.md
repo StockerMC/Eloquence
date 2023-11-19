@@ -1,6 +1,6 @@
 # How to run the project
 # NOTE: these commands are tested on Linux. It should probably work on other operating systems as well.
-# Message `727_` on Discord if you have any issues
+# Message `727_` on Discord if you have any issues with the set-up process
 
 # Install the required dependencies
 1) `git clone https://github.com/StockerMC/Eloquence`
@@ -15,7 +15,7 @@
 
 # Running the backend
 1. `cd` into `alice-hacks-backend` folder
-2. Run `uvicorn` to start the backend server. Keep note of the ip address that is outputted.
+2. Run `uvicorn server:app --port 3000` to start the backend server. Keep note of the ip address that is outputted.
 
 # Running the frontend
 1. `cd` into the `alice-hacks-frontend` folder
