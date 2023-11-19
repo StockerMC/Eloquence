@@ -31,7 +31,7 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
     return common_words
 
 
-#TODO: does not work
+# TODO: does not work
 def get_fillers(text: str) -> list[tuple[int, int]]:
     result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in
               re.finditer(fr'(\b{substring})|({substring}\b)|(\b{substring}\b)', text, re.IGNORECASE)]
@@ -57,8 +57,14 @@ def get_sentence_length(text: str) -> list[int]:
     return [len(get_words(sentence)) for sentence in sentences]
 
 
+# TODO: make harsher
 def get_score(filler_count: int, wpm: float, sentence_length: list[int]) -> float:
-    return (1 - (5 * filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
+    ans = (1 - (5 * filler_count / wpm)) * (1 - (abs(10 - sum(sentence_length) / len(sentence_length)) / 10))
+    if wpm > 160:
+        ans -= wpm - 160
+    elif wpm < 110:
+        ans -= 110 - wpm
+    return max(ans, 0)
 
 
 # TODO: ask user if it's a presentation, speech, etc. and for their time limit (e.g. what can they cut down on to fit the time limit)
