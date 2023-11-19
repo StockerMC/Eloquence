@@ -31,9 +31,10 @@ def most_common_words(text: str) -> list[tuple[str, int]]:
     return common_words
 
 
+#TODO: does not work
 def get_fillers(text: str) -> list[tuple[int, int]]:
     result = [(m.start(), len(substring)) for substring in (filler_words + filler_phrases) for m in
-              re.finditer(f'(\b{substring})|({substring}\b)|(\b{substring}\b)', text)]
+              re.finditer(f'(\b{substring})|({substring}\b)|(\b{substring}\b)', text, re.IGNORECASE)]
     return result
 
 

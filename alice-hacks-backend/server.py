@@ -30,9 +30,24 @@ class Response:
     duration: float
     grammar_mistakes: int
 
+@post("/test")
+def test(input: FromFiles) -> Response:
+    return Response(transcript=r"""Um, what do I begin? Let's start with this. Uh, I'm sorry. Um, this is a first for me. I've never faced criticism like this before. Uh, so yeah, I'm surrounded by 
+good people, and, um, I believe I make good decisions, but I'm still a human being, so, uh, so yeah, I'm surrounded by good people, and, um, I believe I make good decisions, but I'm st
+ill a human being, so, uh, I can't, I can be wrong.""", filler_indices=[], filler_count=0, wpm=167.4359457422758, words=['Um', 'what', 'do', 'I', 'begin', "Let's", 'start', 'with', 'this', 'Uh', r"I'm", 'sorry', 'Um', 'this', 'is', 'a', 'first', 'for', 'me', r"I've", 'never', 'faced', 'criticism', 'like', 'this', 'before', 'Uh', 'so', 'yeah', "I'm", 'surrounded', 'by',
+'good', 'people', 'and', 'um', 'I', 'believe', 'I', 'make', 'good', 'decisions', 'but', "I'm", 'still', 'a', 'human', 'being', 'so', 'uh', 'so', 'yeah', "I'm", 'surrounded', 'by', 'good', 'people', 'and', 'um', 'I', 'believe', 'I', 'make', 'good', 'decisions', 'but', "I'm", 'still', 'a', 'human', 'being', 'so', 'uh', 'I', "can't", 'I', 'can', 'be', 'wrong'], sentence_length=[5, 4, 3, 7, 7, 53, 0], overall_score=0.8714285714285713, most_common_words=[('I', 7), ("I'm", 5), ('so', 4), ('good', 4), ('this', 3)], detailed_feedback=r"""1) Fluency:\n- Ther
+e are multiple instances of filler words and pauses throughout the speech (e.g., "um," "uh," "so yeah"). It disrupts the flow and makes the speech sound less confident.\n- The repetiti
+on of the phrase "so yeah, I\'m surrounded by good people, and, um, I believe I make good decisions" feels redundant and lacks coherence.\n- The sentence "I can\'t, I can be wrong" is 
+not structured smoothly and may cause confusion for the listener.\n\n2) Grammar:\n- The sentence "I can\'t, I can be wrong" lacks clarity and accuracy. It needs to be rephrased for cor
+rect and precise meaning.\n\n5) Logical Structure:\n- The speech lacks a clear structure or logical flow. It jumps between different ideas without smooth transitions, causing some conf
+usion for the listener.\n\nOverall, the speaker should work on reducing filler words and pauses, organizing their thoughts more coherently, and improving the clarity and grammar of their sentences for better overall fluency and logical structure.""",
+                    duration=28.309333333333335,
+                    grammar_mistakes=0)
+
 
 @post("/api")
 def home(input: FromFiles) -> Response:
+    print('hello')
     value = input.value[0]
     binary_data = value.data
 
