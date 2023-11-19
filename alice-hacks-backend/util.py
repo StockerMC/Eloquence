@@ -27,7 +27,7 @@ def get_words(text: str) -> list[str]:
 
 def most_common_words(text: str) -> list[tuple[str, int]]:
     word_freq = Counter(get_words(text))
-    common_words = word_freq.most_common(5)
+    common_words = word_freq.most_common(10)
     return common_words
 
 
@@ -63,7 +63,7 @@ def get_max_combo(filler_inds, text: str) -> int:
     ind = 0
     filler = 0
     for i, word in enumerate(get_words(text)):
-        if ind+len(word)+1 > filler_inds[filler][0] > ind:
+        if filler < len(filler_inds) and ind + len(word)+1 > filler_inds[filler][0] >= ind:
             cur = 0
             filler += 1
         else:
