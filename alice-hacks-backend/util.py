@@ -71,6 +71,8 @@ system_prompt = """Give me constructive criticism for my following speech. Use t
 4) Conciseness (efficiency in expression, direct communication, maintaining focus)
 5) Logical Structure (transitions, consistency, appropriateness)
 
+IMPORTANT: Specify each header or topic with a number and a bracket e.g. 1) Fluency.
+
 Only comment on things very good or very bad, don't comment on things that are just okay. Be concise with feedback.
 Be specific with feedback. Don't just say "good" or "bad". Give examples of what was good or bad.
 Everything you say should be to help the speaker improve. Don't be mean or rude. Be encouraging and supportive.
