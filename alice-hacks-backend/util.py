@@ -57,9 +57,19 @@ def get_sentence_length(text: str) -> list[int]:
     return [len(get_words(sentence)) for sentence in sentences]
 
 
-def get_max_combo(filler_indices, word_count: int) -> int:
-    filler_indices = [(0, 0)] + filler_indices + [(word_count, 0)]
-    max_combo = max([filler_indices[i][0] - filler_indices[i - 1][0] for i in range(1, len(filler_indices))])
+def get_max_combo(filler_inds, text: str) -> int:
+    max_combo = 0
+    cur = 0
+    ind = 0
+    filler = 0
+    for i, word in enumerate(get_words(text)):
+        if ind+len(word)+1 > filler_inds[filler][0] > ind:
+            cur = 0
+            filler += 1
+        else:
+            cur += 1
+            max_combo = max(max_combo, cur)
+        ind += len(word)+1
     return max_combo
 
 

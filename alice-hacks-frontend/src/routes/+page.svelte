@@ -3,6 +3,7 @@
 	import "iconify-icon";
 	import { enhance } from "$app/forms";
 	import { LinkedChart, LinkedLabel, LinkedValue } from "svelte-tiny-linked-charts";
+	import App from "$lib/components/App.svelte";
 
 	export let form;
 	$: if (form) {
@@ -72,6 +73,9 @@
 
 <div class="stroke- flex justify-center items-center flex-col p-4 bg-surface-300">
 	<h1 class="mt-24 mb-12 title p-12">Eloquence</h1>
+	<div class="flex h-36 w-screen justify-start">
+		<App />
+	</div>
 	<form
 		class="w-3/4 mt-12 mb-8 flex justify-center items-center flex-col"
 		method="POST"
